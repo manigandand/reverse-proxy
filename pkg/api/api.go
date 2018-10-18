@@ -4,7 +4,10 @@ import (
 	"manigandand-golang-test/pkg/errors"
 	"manigandand-golang-test/pkg/respond"
 	"net/http"
+	"strconv"
+	"strings"
 
+	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 )
@@ -43,6 +46,34 @@ func (f apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Errorf("Error: %s, StatusCode: %d", err.Error(), err.Status)
 		respond.Fail(w, r, err)
 	}
+}
+
+// RecipeRequired validates the request recipe ids
+func RecipeRequired(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		var (
+			IDs          []int
+			IDContainers []string
+		)
+		ids := r.URL.Query().Get("ids")
+		if strings.TrimSpace(ids) != "" {
+			IDContainers = strings.Split(ids, ",")
+		}
+
+		for _, id := range IDContainers {
+			i, err := strconv.Atoi(id)
+			if err != nil {
+				respond.Fail(w, r, errors.NewAppError(400, "invalid recipe id"))
+				return
+			}
+			IDs = append(IDs, i)
+		}
+
+		context.Set(r, "ids", IDs)
+		next.ServeHTTP(w, r)
+		return
+	}
+	return http.HandlerFunc(fn)
 }
 
 // LogHandler serves handlerfunc
