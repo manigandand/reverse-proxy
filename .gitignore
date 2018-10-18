@@ -1,0 +1,40 @@
+# OS X
+.DS_Store
+
+# Thumbnails
+._*
+
+user_stories
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+assets
+# SASS & Compass
+.sass-cache
+
+media/
+*.sw[op]
+*.log
+*.pdf
+*.out
+*.pot
+*.html~
+*.pid
+# Redis dump
+*.rdb
+testing.db
+*.db
+db.sqlite
+*.sublime-*
+
+*.env
+*.test
+*.tmp
+*.test
+tmp.*
+notes/
+
+# Vendor Packages
+vendor/
+
+# Build Binaries
