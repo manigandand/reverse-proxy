@@ -1,4 +1,4 @@
-package schemas
+package recipe
 
 // Recipe holds the information about the recipe properties
 type Recipe struct {

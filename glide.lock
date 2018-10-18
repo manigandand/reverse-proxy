@@ -1,6 +1,23 @@
-hash: c0c9c5cb6b78c831df54e7d4d8523e4be29106271c656cbfcc9a075ad13d34d9
-updated: 2018-10-18T23:54:59.336923874+05:30
+hash: 2cda1997a2146ada9b15de206f6f3f398574776cdd21e5f690cbebd4d9837238
+updated: 2018-10-19T03:03:53.944204191+05:30
 imports:
+- name: github.com/gorilla/context
+  version: aed02d124ae4a0e94fea4541c8effd05bf0c8296
+- name: github.com/gorilla/mux
+  version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
+- name: github.com/gorilla/schema
+  version: d0e4c24cff97ae983e9847e0ed5a02dc10013d41
+- name: github.com/konsorten/go-windows-terminal-sequences
+  version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
 - name: github.com/sirupsen/logrus
   version: ad15b42461921f1fb3529b058c6786c6a45d5162
+- name: golang.org/x/crypto
+  version: 0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/sys
+  version: ebfc5b4631820b793c9010c87fd8fef0f39eb082
+  subpackages:
+  - unix
+  - windows
 testImports: []

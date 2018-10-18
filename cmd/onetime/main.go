@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"manigandand-golang-test/schemas"
+	"manigandand-golang-test/pkg/recipe"
 	"net/http"
 	"net/url"
 	"time"
@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	var response schemas.Recipe
+	var response recipe.Recipe
 	// proxyStr := "http://195.201.249.128:3128"
 	// proxyURL, err := url.Parse(proxyStr)
 	// if err != nil {

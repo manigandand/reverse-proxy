@@ -2,3 +2,7 @@ package: manigandand-golang-test
 import:
 - package: github.com/sirupsen/logrus
   version: v1.1.1
+- package: github.com/gorilla/mux
+  version: v1.6.2
+- package: github.com/gorilla/schema
+  version: v1.0.2
