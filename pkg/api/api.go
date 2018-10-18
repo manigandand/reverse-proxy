@@ -61,9 +61,12 @@ func RecipeRequired(next http.Handler) http.Handler {
 		}
 
 		for _, id := range IDContainers {
+			if strings.TrimSpace(id) == "" {
+				continue
+			}
 			i, err := strconv.Atoi(id)
 			if err != nil {
-				respond.Fail(w, r, errors.NewAppError(400, "invalid recipe id"))
+				respond.Fail(w, r, errors.BadRequest("invalid recipe id"))
 				return
 			}
 			IDs = append(IDs, i)

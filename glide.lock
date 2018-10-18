@@ -1,5 +1,5 @@
-hash: 9c6fe1bfe41d6ec8f827b21888f301176d84657caa413c57f9ff579d320a466a
-updated: 2018-10-19T04:10:47.205729189+05:30
+hash: 0bddb5f13689f703a25be24b7711853cedbb14151da486f4d8178fef3cb678d2
+updated: 2018-10-19T04:18:18.339793543+05:30
 imports:
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
@@ -9,6 +9,8 @@ imports:
   version: d0e4c24cff97ae983e9847e0ed5a02dc10013d41
 - name: github.com/konsorten/go-windows-terminal-sequences
   version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
+- name: github.com/rs/cors
+  version: 9a47f48565a795472d43519dd49aac781f3034fb
 - name: github.com/sirupsen/logrus
   version: ad15b42461921f1fb3529b058c6786c6a45d5162
 - name: golang.org/x/crypto

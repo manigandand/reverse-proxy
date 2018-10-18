@@ -8,3 +8,5 @@ import:
   version: v1.0.2
 - package: github.com/gorilla/context
   version: v1.1.1
+- package: github.com/rs/cors
+  version: v1.6.0
