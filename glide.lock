@@ -1,0 +1,6 @@
+hash: c0c9c5cb6b78c831df54e7d4d8523e4be29106271c656cbfcc9a075ad13d34d9
+updated: 2018-10-18T23:54:59.336923874+05:30
+imports:
+- name: github.com/sirupsen/logrus
+  version: ad15b42461921f1fb3529b058c6786c6a45d5162
+testImports: []
