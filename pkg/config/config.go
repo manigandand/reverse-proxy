@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -16,6 +17,7 @@ var (
 	Env                  string
 	Port                 string
 	ServerRecipeEndpoint string
+	ClientTimeout        = 2 * time.Second
 )
 
 func init() {

@@ -17,3 +17,11 @@ type Ingredient struct {
 	Name      string `json:"name"`
 	ImageLink string `json:"imageLink"`
 }
+
+// RecipesSort should sort given recipe container values by preparation time
+// of repos in ascending order.
+type RecipesSort []*Recipe
+
+func (r RecipesSort) Len() int           { return len(r) }
+func (r RecipesSort) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
+func (r RecipesSort) Less(i, j int) bool { return r[i].PrepTime < r[j].PrepTime }
