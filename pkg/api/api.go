@@ -19,8 +19,10 @@ var (
 
 // Routes holds the mux route connection
 type Routes struct {
-	Root    *mux.Router
-	Recipes *mux.Router
+	Root       *mux.Router
+	Recipe     *mux.Router
+	NeedRecipe *mux.Router
+	Recipes    *mux.Router
 }
 
 type apiHandler func(w http.ResponseWriter, r *http.Request) *errors.AppError
@@ -30,6 +32,8 @@ func InitAPI() {
 	BaseRoutes = &Routes{}
 	BaseRoutes.Root = mux.NewRouter()
 	BaseRoutes.Root.Handle("/", http.HandlerFunc(indexHandler))
+	BaseRoutes.Recipe = BaseRoutes.Root.PathPrefix("/recipe").Subrouter()
+	BaseRoutes.NeedRecipe = BaseRoutes.Recipe.PathPrefix("/{recipe-id:[0-9]+}").Subrouter()
 	BaseRoutes.Recipes = BaseRoutes.Root.PathPrefix("/recipes").Subrouter()
 	InitRecipe()
 }
@@ -70,6 +74,10 @@ func RecipeRequired(next http.Handler) http.Handler {
 				return
 			}
 			IDs = append(IDs, i)
+		}
+		if len(IDs) > 5 {
+			respond.Fail(w, r, errors.UnprocessableEntity("More than 5 recipe ids"))
+			return
 		}
 
 		context.Set(r, "ids", IDs)
