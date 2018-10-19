@@ -10,3 +10,7 @@ import:
   version: v1.1.1
 - package: github.com/rs/cors
   version: v1.6.0
+- package: github.com/onsi/ginkgo
+  version: v1.6.0
+- package: github.com/onsi/gomega
+  version: v1.4.2

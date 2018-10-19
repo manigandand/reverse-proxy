@@ -24,9 +24,7 @@ type RecipeChanRes struct {
 // InitRecipe initiates the recipe enpoints
 func InitRecipe() {
 	// Get the recipes
-	BaseRoutes.NeedRecipe.Handle(
-		"", RecipeRequired(apiHandler(getRecipeHandler)),
-	).Methods(http.MethodGet)
+	BaseRoutes.NeedRecipe.Handle("", apiHandler(getRecipeHandler)).Methods(http.MethodGet)
 	// Get the recipes
 	BaseRoutes.Recipes.Handle(
 		"", RecipeRequired(apiHandler(getRecipesHandler)),
@@ -160,17 +158,6 @@ func getID(r *http.Request, keyID string) int {
 
 // getRecipeHandler
 func getRecipeHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
-	recipeID := getID(r, "recipe-id")
-	recipe, err := proxy.GetRecipe(recipeID)
-	if err != nil {
-		return err
-	}
-	respond.Format(w, r, http.StatusOK, recipe)
+	proxy.ReverseProxy(w, r, mux.Vars(r)["recipe-id"])
 	return nil
-	// body, err := ioutil.ReadAll(r.Body)
-	// if err != nil {
-	// 	return errors.BadRequest(err.Error())
-	// }
-	// r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-	// proxy.ReverseProxy(w, r, recipeID)
 }

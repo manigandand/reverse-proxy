@@ -20,6 +20,7 @@ var (
 	ServerRecipeEndpoint string
 	MaxRecipesIDs        = 5
 	ClientTimeout        = 2 * time.Second
+	ProxyServerHost      = "https://s3-eu-west-1.amazonaws.com/test-golang-recipes/"
 	DefaultAPIHost       = "http://localhost:8080"
 )
 
