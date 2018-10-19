@@ -16,8 +16,11 @@ const (
 var (
 	Env                  string
 	Port                 string
+	APIHost              string
 	ServerRecipeEndpoint string
+	MaxRecipesIDs        = 5
 	ClientTimeout        = 2 * time.Second
+	DefaultAPIHost       = "http://localhost:8080"
 )
 
 func init() {
@@ -29,6 +32,7 @@ func GetAllEnv() {
 	// API Configs
 	mustEnv("ENV", &Env, EnvDevelopment)
 	mustEnv("PORT", &Port, "8080")
+	mustEnv("API_HOST", &APIHost, DefaultAPIHost)
 	mustEnv("SEREVR_RECIPE_ENDPOINT", &ServerRecipeEndpoint,
 		"https://s3-eu-west-1.amazonaws.com/test-golang-recipes/%d")
 }

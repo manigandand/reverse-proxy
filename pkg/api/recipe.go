@@ -1,14 +1,11 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
-	"manigandand-golang-test/pkg/config"
 	"manigandand-golang-test/pkg/errors"
+	"manigandand-golang-test/pkg/proxy"
 	"manigandand-golang-test/pkg/recipe"
 	"manigandand-golang-test/pkg/respond"
 	"net/http"
-	"net/url"
 	"sort"
 	"strconv"
 	"sync"
@@ -36,18 +33,6 @@ func InitRecipe() {
 	).Methods(http.MethodGet)
 }
 
-// getRecipeHandler
-func getRecipeHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
-	recipeID := getID(r, "recipe-id")
-	recipe, err := getRecipeFromServer(recipeID)
-	if err != nil {
-		return err
-	}
-
-	respond.Format(w, r, http.StatusOK, recipe)
-	return nil
-}
-
 func getRecipesHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
 	recipeIDs := context.Get(r, "ids").([]int)
 	// get recipe by ids
@@ -60,25 +45,69 @@ func getRecipesHandler(w http.ResponseWriter, r *http.Request) *errors.AppError 
 		return nil
 	}
 	// get all recipes
+	page := respond.NewPage(r)
+	recipes, isEOF := getAllRecipes(page)
 
-	log.Info(recipeIDs)
-	recipe, err := getRecipeFromServer(1)
-	if err != nil {
-		return err
+	respond.Paginate(w, r, recipes, page, isEOF, len(recipes))
+	return nil
+}
+
+func getAllRecipes(page *respond.Page) ([]*recipe.Recipe, bool) {
+	var (
+		recipes                 recipe.RecipesSort
+		wg                      sync.WaitGroup
+		isEOF                   bool
+		maxConcurrentGoroutines = 5
+		bufferChan              = make(chan struct{}, maxConcurrentGoroutines)
+		done                    = make(chan bool)
+		resultChan              = make(chan *RecipeChanRes)
+	)
+	for i := 0; i < maxConcurrentGoroutines; i++ {
+		bufferChan <- struct{}{}
 	}
 
-	respond.Format(w, r, http.StatusOK, recipe)
-	return nil
+	// read from chanels
+	go func(total int) {
+		for i := 0; i < total; i++ {
+			select {
+			case isDone := <-done:
+				if isDone {
+					bufferChan <- struct{}{}
+				}
+			case res := <-resultChan:
+				if res.Err == nil {
+					recipes = append(recipes, res.Recipe)
+				} else {
+					if res.Err.IsStatusNotFound() {
+						isEOF = true
+					}
+				}
+			}
+		}
+	}(page.Limit * 2)
+
+	recipeID := page.Offset
+	wg.Add(page.Limit)
+	for i := 0; i < page.Limit; i++ {
+		<-bufferChan
+		recipeID++
+		go getRecipeByID(recipeID, &wg, done, resultChan)
+	}
+	wg.Wait()
+	close(done)
+	close(resultChan)
+
+	return recipes, isEOF
 }
 
 func getRecipeByIDs(recipeIDs []int) ([]*recipe.Recipe, *errors.AppError) {
 	var (
-		recipes recipe.RecipesSort
-		wg      sync.WaitGroup
+		recipes    recipe.RecipesSort
+		wg         sync.WaitGroup
+		done       = make(chan bool)
+		resultChan = make(chan *RecipeChanRes)
 	)
 	totalRecipes := len(recipeIDs)
-	done := make(chan bool)
-	resultChan := make(chan *RecipeChanRes)
 	wg.Add(totalRecipes)
 	for _, recipeID := range recipeIDs {
 		go getRecipeByID(recipeID, &wg, done, resultChan)
@@ -112,43 +141,12 @@ func getRecipeByID(recipeID int, wg *sync.WaitGroup, done chan bool, resultChan 
 		done <- true
 		wg.Done()
 	}()
-
-	recipe, err := getRecipeFromServer(recipeID)
+	recipe, err := proxy.GetRecipe(recipeID)
 	resultChan <- &RecipeChanRes{
 		Recipe: recipe,
 		Err:    err,
 	}
 	return
-}
-
-func getRecipeFromServer(recipeID int) (*recipe.Recipe, *errors.AppError) {
-	var response recipe.Recipe
-
-	client := &http.Client{
-		Timeout: config.ClientTimeout,
-	}
-	url, err := url.Parse(fmt.Sprintf(config.ServerRecipeEndpoint, recipeID))
-	if err != nil {
-		return nil, errors.InternalServer(err.Error())
-	}
-	request, err := http.NewRequest(http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, errors.InternalServer(err.Error())
-	}
-	resp, err := client.Do(request)
-	if err != nil {
-		return nil, errors.InternalServer(err.Error())
-	}
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, errors.NotFound("The specified recipe does not exist.")
-	}
-
-	defer resp.Body.Close()
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		return nil, errors.InternalServer(err.Error())
-	}
-
-	return &response, nil
 }
 
 func getID(r *http.Request, keyID string) int {
@@ -158,4 +156,21 @@ func getID(r *http.Request, keyID string) int {
 		log.Error(err)
 	}
 	return id
+}
+
+// getRecipeHandler
+func getRecipeHandler(w http.ResponseWriter, r *http.Request) *errors.AppError {
+	recipeID := getID(r, "recipe-id")
+	recipe, err := proxy.GetRecipe(recipeID)
+	if err != nil {
+		return err
+	}
+	respond.Format(w, r, http.StatusOK, recipe)
+	return nil
+	// body, err := ioutil.ReadAll(r.Body)
+	// if err != nil {
+	// 	return errors.BadRequest(err.Error())
+	// }
+	// r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+	// proxy.ReverseProxy(w, r, recipeID)
 }

@@ -41,3 +41,8 @@ func UnprocessableEntity(message string) *AppError { // 422
 func InternalServer(message string) *AppError { // 500
 	return &AppError{http.StatusInternalServerError, message}
 }
+
+// IsStatusNotFound should return true if HTTP status of an error is 404.
+func (err *AppError) IsStatusNotFound() bool {
+	return err.Status == http.StatusNotFound
+}

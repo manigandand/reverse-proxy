@@ -1,6 +1,7 @@
 package api
 
 import (
+	"manigandand-golang-test/pkg/config"
 	"manigandand-golang-test/pkg/errors"
 	"manigandand-golang-test/pkg/respond"
 	"net/http"
@@ -59,6 +60,11 @@ func RecipeRequired(next http.Handler) http.Handler {
 			IDs          []int
 			IDContainers []string
 		)
+		if err := r.ParseForm(); err != nil {
+			respond.Fail(w, r, errors.BadRequest(err.Error()))
+			return
+		}
+
 		ids := r.URL.Query().Get("ids")
 		if strings.TrimSpace(ids) != "" {
 			IDContainers = strings.Split(ids, ",")
@@ -75,7 +81,7 @@ func RecipeRequired(next http.Handler) http.Handler {
 			}
 			IDs = append(IDs, i)
 		}
-		if len(IDs) > 5 {
+		if len(IDs) > config.MaxRecipesIDs {
 			respond.Fail(w, r, errors.UnprocessableEntity("More than 5 recipe ids"))
 			return
 		}
