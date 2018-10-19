@@ -14,3 +14,7 @@ import:
   version: v1.6.0
 - package: github.com/onsi/gomega
   version: v1.4.2
+- package: github.com/hpcloud/tail
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert

@@ -76,8 +76,8 @@ func Format(w http.ResponseWriter, r *http.Request, status int, data interface{}
 	With(w, r, status, res)
 }
 
-// Fail write the error response
-func Fail(w http.ResponseWriter, r *http.Request, e *errors.AppError) {
+// WithFail write the error response
+func WithFail(w http.ResponseWriter, r *http.Request, e *errors.AppError) {
 	var res Response
 	res.Meta = Meta{Status: e.Status, Message: e.Message}
 	With(w, r, e.Status, res)

@@ -49,7 +49,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func (f apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := f(w, r); err != nil {
 		log.Errorf("Error: %s, StatusCode: %d", err.Error(), err.Status)
-		respond.Fail(w, r, err)
+		respond.WithFail(w, r, err)
 	}
 }
 
@@ -61,7 +61,7 @@ func RecipeRequired(next http.Handler) http.Handler {
 			IDContainers []string
 		)
 		if err := r.ParseForm(); err != nil {
-			respond.Fail(w, r, errors.BadRequest(err.Error()))
+			respond.WithFail(w, r, errors.BadRequest(err.Error()))
 			return
 		}
 
@@ -76,13 +76,13 @@ func RecipeRequired(next http.Handler) http.Handler {
 			}
 			i, err := strconv.Atoi(id)
 			if err != nil {
-				respond.Fail(w, r, errors.BadRequest("invalid recipe id"))
+				respond.WithFail(w, r, errors.BadRequest("invalid recipe id"))
 				return
 			}
 			IDs = append(IDs, i)
 		}
 		if len(IDs) > config.MaxRecipesIDs {
-			respond.Fail(w, r, errors.UnprocessableEntity("More than 5 recipe ids"))
+			respond.WithFail(w, r, errors.UnprocessableEntity("More than 5 recipe ids"))
 			return
 		}
 
