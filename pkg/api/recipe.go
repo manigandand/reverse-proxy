@@ -7,7 +7,6 @@ import (
 	"manigandand-golang-test/pkg/respond"
 	"net/http"
 	"sort"
-	"strconv"
 	"sync"
 
 	"github.com/gorilla/context"
@@ -145,15 +144,6 @@ func getRecipeByID(recipeID int, wg *sync.WaitGroup, done chan bool, resultChan 
 		Err:    err,
 	}
 	return
-}
-
-func getID(r *http.Request, keyID string) int {
-	key := mux.Vars(r)[keyID]
-	id, err := strconv.Atoi(key)
-	if err != nil {
-		log.Error(err)
-	}
-	return id
 }
 
 // getRecipeHandler

@@ -92,7 +92,7 @@ func With(w http.ResponseWriter, r *http.Request, status int, data interface{}) 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Encoding", "gzip")
 	w.WriteHeader(status)
 	if status != http.StatusNoContent {

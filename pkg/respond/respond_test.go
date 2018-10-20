@@ -25,7 +25,7 @@ var _ = Describe("Respond", func() {
 		r := newTestRequest()
 		With(w, r, http.StatusOK, testData)
 		Expect(w.Code).To(Equal(http.StatusOK))
-		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json; charset=utf-8"))
+		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json"))
 		Expect(w.HeaderMap.Get("Content-Encoding")).To(Equal("gzip"))
 	})
 	It("New Page - should decode paginate information from request", func() {
@@ -60,7 +60,7 @@ var _ = Describe("Respond", func() {
 		r := newTestRequest()
 		Format(w, r, http.StatusOK, testData)
 		Expect(w.Code).To(Equal(http.StatusOK))
-		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json; charset=utf-8"))
+		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json"))
 		Expect(w.HeaderMap.Get("Content-Encoding")).To(Equal("gzip"))
 	})
 	It("WithFail - should return error response", func() {
@@ -68,7 +68,7 @@ var _ = Describe("Respond", func() {
 		r := newTestRequest()
 		WithFail(w, r, errors.BadRequest("invalid recipe id"))
 		Expect(w.Code).To(Equal(http.StatusBadRequest))
-		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json; charset=utf-8"))
+		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json"))
 		Expect(w.HeaderMap.Get("Content-Encoding")).To(Equal("gzip"))
 	})
 
@@ -86,7 +86,7 @@ var _ = Describe("Respond", func() {
 
 		Paginate(w, r, testData, page, false, 10)
 		Expect(w.Code).To(Equal(http.StatusOK))
-		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json; charset=utf-8"))
+		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json"))
 		Expect(w.HeaderMap.Get("Content-Encoding")).To(Equal("gzip"))
 	})
 
@@ -104,7 +104,7 @@ var _ = Describe("Respond", func() {
 
 		Paginate(w, r, testData, page, false, 10)
 		Expect(w.Code).To(Equal(http.StatusOK))
-		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json; charset=utf-8"))
+		Expect(w.HeaderMap.Get("Content-Type")).To(Equal("application/json"))
 		Expect(w.HeaderMap.Get("Content-Encoding")).To(Equal("gzip"))
 	})
 })

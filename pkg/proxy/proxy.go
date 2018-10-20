@@ -13,13 +13,11 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strconv"
-	"strings"
 )
 
 // GetRecipe get the recipe details from server over HTTP
 func GetRecipe(recipeID int) (*recipe.Recipe, *errors.AppError) {
 	var response recipe.Recipe
-
 	client := &http.Client{
 		Timeout: config.ClientTimeout,
 	}
@@ -52,12 +50,11 @@ func ReverseProxy(w http.ResponseWriter, r *http.Request, path string) {
 	remote, _ := url.Parse(config.ProxyServerHost)
 
 	proxy := httputil.NewSingleHostReverseProxy(remote)
-	// proxy.Transport = &transport{http.DefaultTransport}
-	// proxy.ModifyResponse = modifyProxyResponse
+	proxy.Transport = &transport{http.DefaultTransport}
+	proxy.ModifyResponse = modifyProxyResponse
 
 	r.URL.Scheme = remote.Scheme
 	r.URL.Host = remote.Host
-	// path := singleJoiningSlash(remote.Path, r.URL.Path)
 	r.URL.Path = path
 	r.Host = remote.Host
 	proxy.ServeHTTP(w, r)
@@ -69,14 +66,12 @@ type transport struct {
 	http.RoundTripper
 }
 
-// var _ http.RoundTripper = &transport{}
-
 func (t *transport) RoundTrip(req *http.Request) (resp *http.Response, err error) {
 	resp, err = t.RoundTripper.RoundTrip(req)
 	if err != nil {
 		return nil, err
 	}
-	resp.Header.Set("Content-Type", "application/json; charset=utf-8")
+	resp.Header.Set("Content-Type", "application/json")
 	return resp, nil
 }
 
@@ -104,21 +99,8 @@ func modifyProxyResponse(resp *http.Response) (err error) {
 	resp.Body = ioutil.NopCloser(bytes.NewReader(compressedData))
 	resp.ContentLength = int64(len(b))
 	resp.Header.Set("Content-Length", strconv.Itoa(len(b)))
-	resp.Header.Set("Content-Type", "application/json; charset=utf-8")
+	resp.Header.Set("Content-Type", "application/json")
 	resp.Header.Set("Content-Encoding", "gzip")
 
 	return nil
-}
-
-func singleJoiningSlash(a, b string) string {
-	aslash := strings.HasSuffix(a, "/")
-	bslash := strings.HasPrefix(b, "/")
-
-	switch {
-	case aslash && bslash:
-		return b[len(b)-1:]
-	case !aslash && !bslash:
-		return a + "/" + b
-	}
-	return a + b
 }
