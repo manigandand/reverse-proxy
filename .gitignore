@@ -38,3 +38,4 @@ notes/
 vendor/
 
 # Build Binaries
+recipe_proxy_server
