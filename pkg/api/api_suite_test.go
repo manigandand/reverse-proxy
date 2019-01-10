@@ -2,8 +2,8 @@ package api_test
 
 import (
 	"io"
-	. "manigandand-golang-test/pkg/api"
-	"manigandand-golang-test/pkg/config"
+	. "reverse-proxy/pkg/api"
+	"reverse-proxy/pkg/config"
 	"net/http"
 	"net/http/httptest"
 	"os"

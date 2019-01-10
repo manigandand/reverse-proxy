@@ -3,9 +3,9 @@ package respond
 import (
 	"compress/gzip"
 	"encoding/json"
-	"manigandand-golang-test/pkg/config"
-	"manigandand-golang-test/pkg/errors"
 	"net/http"
+	"reverse-proxy/pkg/config"
+	"reverse-proxy/pkg/errors"
 	"strconv"
 
 	"github.com/gorilla/schema"

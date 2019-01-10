@@ -1,4 +1,4 @@
-package: manigandand-golang-test
+package: reverse-proxy
 import:
 - package: github.com/sirupsen/logrus
   version: v1.1.1

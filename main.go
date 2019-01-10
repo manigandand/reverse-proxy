@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"manigandand-golang-test/pkg/api"
-	"manigandand-golang-test/pkg/config"
+	"reverse-proxy/pkg/api"
+	"reverse-proxy/pkg/config"
 	"net/http"
 
 	"github.com/rs/cors"

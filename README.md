@@ -1,4 +1,4 @@
-HelloFresh Backend Developer GoLang Test
+HFresh Backend Developer GoLang Test
 ====================
 
 Hello and thanks for taking the time to try this out.
@@ -11,7 +11,6 @@ You're **encouraged** to use GoLang Standard library and **allowed** to use thir
 
 As this is a code review process, please avoid adding generated code to the project. This makes our jobs as reviewers more difficult, as we can't review code you didn't write. This means avoiding committing vendor folders or similar, which generates thousands of lines of code in stub files.
 
-_Note: While we love open source here at HelloFresh, please do not create a public repo with your test in! This challenge is only shared with people interviewing, and for obvious reasons, we'd like it to remain this way._
 
 Instructions
 -----

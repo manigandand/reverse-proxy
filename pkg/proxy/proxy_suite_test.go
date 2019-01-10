@@ -1,8 +1,8 @@
 package proxy_test
 
 import (
-	"manigandand-golang-test/pkg/config"
 	"os"
+	"reverse-proxy/pkg/config"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

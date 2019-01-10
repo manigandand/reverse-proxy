@@ -1,10 +1,10 @@
 package respond_test
 
 import (
-	"manigandand-golang-test/pkg/errors"
-	. "manigandand-golang-test/pkg/respond"
 	"net/http"
 	"net/http/httptest"
+	"reverse-proxy/pkg/errors"
+	. "reverse-proxy/pkg/respond"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

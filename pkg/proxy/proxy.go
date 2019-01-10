@@ -6,12 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"manigandand-golang-test/pkg/config"
-	"manigandand-golang-test/pkg/errors"
-	"manigandand-golang-test/pkg/recipe"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"reverse-proxy/pkg/config"
+	"reverse-proxy/pkg/errors"
+	"reverse-proxy/pkg/recipe"
 	"strconv"
 )
 

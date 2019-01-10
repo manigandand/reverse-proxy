@@ -1,9 +1,9 @@
 package main
 
 import (
-	"manigandand-golang-test/pkg/api"
-	"manigandand-golang-test/pkg/config"
 	"os"
+	"reverse-proxy/pkg/api"
+	"reverse-proxy/pkg/config"
 	"testing"
 )
 

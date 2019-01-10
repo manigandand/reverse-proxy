@@ -2,8 +2,8 @@ FROM golang:1.10-alpine AS builder
 
 MAINTAINER Manigandan Dharmalingam <manigandan.jeff@gmail.com>
 
-COPY . /go/src/manigandand-golang-test/
-WORKDIR /go/src/manigandand-golang-test/
+COPY . /go/src/reverse-proxy/
+WORKDIR /go/src/reverse-proxy/
 
 RUN apk add --update bash make
 
@@ -13,7 +13,7 @@ RUN make build-server
 
 FROM alpine
 
-COPY --from=builder /go/src/manigandand-golang-test/ /
+COPY --from=builder /go/src/reverse-proxy/ /
 
 RUN apk add --no-cache ca-certificates
 ENV ENV developemnt

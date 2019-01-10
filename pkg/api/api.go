@@ -1,10 +1,10 @@
 package api
 
 import (
-	"manigandand-golang-test/pkg/config"
-	"manigandand-golang-test/pkg/errors"
-	"manigandand-golang-test/pkg/respond"
 	"net/http"
+	"reverse-proxy/pkg/config"
+	"reverse-proxy/pkg/errors"
+	"reverse-proxy/pkg/respond"
 	"strconv"
 	"strings"
 

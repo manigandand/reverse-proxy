@@ -1,8 +1,8 @@
 package errors_test
 
 import (
-	. "manigandand-golang-test/pkg/errors"
 	"net/http"
+	. "reverse-proxy/pkg/errors"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

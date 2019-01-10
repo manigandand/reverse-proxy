@@ -1,10 +1,10 @@
 package api
 
 import (
-	"manigandand-golang-test/pkg/errors"
-	"manigandand-golang-test/pkg/proxy"
-	"manigandand-golang-test/pkg/recipe"
-	"manigandand-golang-test/pkg/respond"
+	"reverse-proxy/pkg/errors"
+	"reverse-proxy/pkg/proxy"
+	"reverse-proxy/pkg/recipe"
+	"reverse-proxy/pkg/respond"
 	"net/http"
 	"sort"
 	"sync"

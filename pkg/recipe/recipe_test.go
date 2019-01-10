@@ -1,7 +1,7 @@
 package recipe_test
 
 import (
-	. "manigandand-golang-test/pkg/recipe"
+	. "reverse-proxy/pkg/recipe"
 	"sort"
 
 	. "github.com/onsi/ginkgo"
