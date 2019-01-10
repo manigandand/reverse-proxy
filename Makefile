@@ -16,7 +16,7 @@ SOURCE_PKG_DIR= ./pkg
 SOURCEDIR=.
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 
-all: debs test build-server run
+all: deps test build-server run
 
 deps:
 	@echo "==>Installing dependencies ...";
